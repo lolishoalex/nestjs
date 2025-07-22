@@ -1,57 +1,47 @@
+import { MovieDto } from './dto/movie.dto';
+import { MovieService } from './movie.service';
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  Headers,
   Param,
+  Patch,
   Post,
-  Query,
-  Req,
-  Res,
+  Put,
 } from '@nestjs/common';
-import type { Request, Response } from 'express';
 
 @Controller('movies')
 export class MovieController {
+  constructor(private readonly movieService: MovieService) {}
+
   @Get()
-  findAll(@Query() query: any) {
-    return JSON.stringify(query);
+  findAll() {
+    return this.movieService.findAll();
   }
 
   @Get(':id')
   findById(@Param('id') id: string) {
-    return { id };
+    return this.movieService.findById(id);
   }
 
   @Post()
-  create(@Body() body: { title: string; genre: string }) {
-    return body;
+  create(@Body() dto: MovieDto) {
+    return this.movieService.create(dto);
   }
 
-  @Get('headers')
-  getHeaders(@Headers() headers: any) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return headers;
+  @Put(':id')
+  update(@Param('id') id: string, @Body() dto: MovieDto) {
+    return this.movieService.update(id, dto);
   }
 
-  @Get('user-agent')
-  getUserAgent(@Headers('user-agent') userAgent: string) {
-    return { userAgent };
+  @Patch(':id')
+  updateIsPublic(@Param('id') id: string, @Body() dto: MovieDto) {
+    return this.movieService.updateIsPublic(id, dto);
   }
 
-  @Get('request')
-  getRequestDetails(@Req() req: Request) {
-    return {
-      method: req.method,
-      url: req.url,
-      headers: req.headers,
-      query: req.query,
-      params: req.params,
-    };
-  }
-
-  @Get('response')
-  getResponseDetails(@Res() res: Response) {
-    res.status(201).json({ message: 'Hello' });
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.movieService.delete(id);
   }
 }
