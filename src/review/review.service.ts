@@ -1,13 +1,12 @@
 import { MovieService } from './../movie/movie.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ReviewEntity } from './entities/review.entity';
 import { Repository } from 'typeorm';
 import { ReviewDto } from './dto/review.dto';
 
 @Injectable()
 export class ReviewService {
-  constructor(
+  /* constructor(
     @InjectRepository(ReviewEntity)
     private readonly reviewRepository: Repository<ReviewEntity>,
     private readonly MovieService: MovieService,
@@ -24,5 +23,5 @@ export class ReviewService {
     });
 
     return await this.reviewRepository.save(review);
-  }
+  } */
 }

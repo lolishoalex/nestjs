@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ActorEntity } from './entities/actor.entity';
 import { Repository } from 'typeorm';
 import { ActorDto } from './dto/actor.dto';
 
 @Injectable()
 export class ActorService {
-  constructor(
+  /*   constructor(
     @InjectRepository(ActorEntity)
     private readonly actorRepository: Repository<ActorEntity>,
   ) {}
@@ -18,5 +17,5 @@ export class ActorService {
     });
 
     return await this.actorRepository.save(actor);
-  }
+  } */
 }
