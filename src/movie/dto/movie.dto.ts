@@ -1,7 +1,9 @@
 import {
   IsArray,
+  IsBoolean,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
   Max,
@@ -25,4 +27,8 @@ export class MovieDto {
   @IsArray()
   @IsUUID('4', { each: true })
   actorIds: string[];
+
+  @IsBoolean()
+  @IsOptional()
+  isAvailable?: boolean;
 }

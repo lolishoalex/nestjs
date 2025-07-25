@@ -13,7 +13,7 @@ import {
 
 @Controller('movies')
 export class MovieController {
-  /* constructor(private readonly movieService: MovieService) {}
+  constructor(private readonly movieService: MovieService) {}
 
   @Get()
   findAll() {
@@ -43,5 +43,5 @@ export class MovieController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.movieService.delete(id);
-  } */
+  }
 }

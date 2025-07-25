@@ -1,27 +1,27 @@
-import { MovieService } from './../movie/movie.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { ReviewDto } from './dto/review.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Review } from '@prisma/client';
 
 @Injectable()
 export class ReviewService {
-  /* constructor(
-    @InjectRepository(ReviewEntity)
-    private readonly reviewRepository: Repository<ReviewEntity>,
-    private readonly MovieService: MovieService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
-  async create(dto: ReviewDto): Promise<ReviewEntity> {
+  async create(dto: ReviewDto): Promise<Review> {
     const { text, rating, movieId } = dto;
-    const movie = await this.MovieService.findById(movieId);
 
-    const review = this.reviewRepository.create({
-      text,
-      rating,
-      movie,
+    const review = await this.prismaService.review.create({
+      data: {
+        text,
+        rating,
+        movie: {
+          connect: {
+            id: movieId,
+          },
+        },
+      },
     });
 
-    return await this.reviewRepository.save(review);
-  } */
+    return review;
+  }
 }
