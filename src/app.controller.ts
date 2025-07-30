@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  //UseFilters,
   UseGuards,
   //UseInterceptors,
   UsePipes,
@@ -11,6 +12,7 @@ import { AppService } from './app.service';
 import { StringToLowercasePipe } from './common/pipes/string-to-lowercase.pipe';
 import { AuthGuard } from './common/guards/auth.guard';
 import { UserAgent } from './common/decorators/user-agent.decorator';
+//import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 //import { ResponseInteceptor } from './common/interceptors/response.interceptor';
 
 @Controller()
@@ -28,6 +30,7 @@ export class AppController {
     return `Movie: ${title}`;
   }
   @UseGuards(AuthGuard)
+  //@UseFilters(AllExceptionsFilter)
   //@UseInterceptors(ResponseInteceptor)
   @Get('@me')
   getProfile(@UserAgent() userAgent: string) {
