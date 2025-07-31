@@ -1,47 +1,23 @@
-import { MovieDto } from './dto/movie.dto';
+import { Controller, Get } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('movies')
+@ApiTags('Movie')
+@Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get()
   findAll() {
-    return this.movieService.findAll();
-  }
-
-  @Get(':id')
-  findById(@Param('id') id: string) {
-    return this.movieService.findById(id);
-  }
-
-  @Post()
-  create(@Body() dto: MovieDto) {
-    return this.movieService.create(dto);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() dto: MovieDto) {
-    return this.movieService.update(id, dto);
-  }
-
-  @Patch(':id')
-  updateIsPublic(@Param('id') id: string, @Body() dto: MovieDto) {
-    return this.movieService.updateIsPublic(id, dto);
-  }
-
-  @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.movieService.delete(id);
+    return [
+      {
+        id: 1,
+        title: 'Fight Club',
+      },
+      {
+        id: 2,
+        title: 'Pulp FSiction',
+      },
+    ];
   }
 }
