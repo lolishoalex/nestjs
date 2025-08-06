@@ -1,47 +1,105 @@
-import { MovieDto } from './dto/movie.dto';
-import { MovieService } from './movie.service';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Body,
   Controller,
-  Delete,
   Get,
+  HttpStatus,
   Param,
-  Patch,
   Post,
-  Put,
+  Query,
 } from '@nestjs/common';
+import { MovieService } from './movie.service';
+import {
+  ApiOkResponse,
+  //ApiBody,
+  //ApiHeader,
+  ApiOperation,
+  //ApiParam,
+  //ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CreateMovieRequest } from './dto/create-movie.dto';
+import { MovieResponse } from './dto/movie.dto';
 
-@Controller('movies')
+@ApiTags('Movie')
+@Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
+  @ApiOperation({
+    summary: 'Get films list',
+    description: 'Calling back all films list',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Found films',
+    //type: [MovieResponse],
+  })
   @Get()
   findAll() {
-    return this.movieService.findAll();
+    return [
+      {
+        id: 1,
+        title: 'Fight Club',
+      },
+      {
+        id: 2,
+        title: 'Pulp FSiction',
+      },
+    ];
   }
 
+  @ApiOperation({
+    summary: 'Get film by ID',
+    description: 'Calling back film info',
+  })
+  // @ApiParam({
+  //   name: 'id',
+  //   type: 'string',
+  //   description: 'Film ID',
+  // })
+  // @ApiQuery({
+  //   name: 'year',
+  //   type: 'number',
+  //   description: 'Filter by year',
+  // })
+  // @ApiHeader({
+  //   name: 'X-Auth-Token',
+  //   description: 'autorisation token',
+  // })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Found film',
+  })
+  @ApiOkResponse({
+    description: 'Not Found film',
+    //type: MovieResponse,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Not Found film',
+  })
   @Get(':id')
-  findById(@Param('id') id: string) {
-    return this.movieService.findById(id);
+  findById(@Param('id') id: string, @Query('year') year: number) {
+    return {
+      id: 1,
+      title: 'Fight Club',
+    };
   }
-
   @Post()
-  create(@Body() dto: MovieDto) {
-    return this.movieService.create(dto);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() dto: MovieDto) {
-    return this.movieService.update(id, dto);
-  }
-
-  @Patch(':id')
-  updateIsPublic(@Param('id') id: string, @Body() dto: MovieDto) {
-    return this.movieService.updateIsPublic(id, dto);
-  }
-
-  @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.movieService.delete(id);
+  @ApiOperation({
+    summary: 'Create film',
+  })
+  // @ApiBody({
+  //   schema: {
+  //     type: 'object',
+  //     properties: {
+  //       title: { type: 'string', example: 'Fight Club' },
+  //     },
+  //   },
+  // })
+  create(@Body() dto: CreateMovieRequest) {
+    return dto;
   }
 }
