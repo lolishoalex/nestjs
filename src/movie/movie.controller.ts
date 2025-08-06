@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Body,
   Controller,
@@ -9,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import {
+  ApiOkResponse,
   //ApiBody,
   //ApiHeader,
   ApiOperation,
@@ -17,6 +19,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { CreateMovieRequest } from './dto/create-movie.dto';
+import { MovieResponse } from './dto/movie.dto';
 
 @ApiTags('Movie')
 @Controller('movie')
@@ -30,6 +34,7 @@ export class MovieController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Found films',
+    //type: [MovieResponse],
   })
   @Get()
   findAll() {
@@ -67,6 +72,10 @@ export class MovieController {
     status: HttpStatus.OK,
     description: 'Found film',
   })
+  @ApiOkResponse({
+    description: 'Not Found film',
+    //type: MovieResponse,
+  })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Not Found film',
@@ -78,7 +87,6 @@ export class MovieController {
       title: 'Fight Club',
     };
   }
-
   @Post()
   @ApiOperation({
     summary: 'Create film',
@@ -91,5 +99,7 @@ export class MovieController {
   //     },
   //   },
   // })
-  create() {}
+  create(@Body() dto: CreateMovieRequest) {
+    return dto;
+  }
 }
