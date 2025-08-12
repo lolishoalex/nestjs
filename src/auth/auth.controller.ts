@@ -11,11 +11,28 @@ import { AuthService } from './auth.service';
 import { RegisterRequest } from './dto/register.dto';
 import { LoginRequest } from './dto/login.dto';
 import type { Request, Response } from 'express';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { AuthResponse } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({
+    summary: 'Create account',
+    description: 'Creating new user account',
+  })
+  @ApiOkResponse({ type: AuthResponse })
+  @ApiBadRequestResponse({ description: 'Invalid data' })
+  @ApiConflictResponse({ description: 'User already exist' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   async register(
@@ -25,6 +42,12 @@ export class AuthController {
     return await this.authService.register(res, dto);
   }
 
+  @ApiOperation({
+    summary: 'Log in system',
+    description: 'Aothorizing user and distribute token',
+  })
+  @ApiOkResponse({ type: AuthResponse })
+  @ApiBadRequestResponse({ description: 'Invalid data' })
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(
@@ -34,6 +57,12 @@ export class AuthController {
     return await this.authService.login(res, dto);
   }
 
+  @ApiOperation({
+    summary: 'Update token',
+    description: 'Generating new token',
+  })
+  @ApiOkResponse({ type: AuthResponse })
+  @ApiUnauthorizedResponse({ description: 'Invalid refresh-token' })
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   async refresh(
@@ -43,6 +72,9 @@ export class AuthController {
     return await this.authService.refresh(req, res);
   }
 
+  @ApiOperation({
+    summary: 'Log out system',
+  })
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   async logout(@Res({ passthrough: true }) res: Response) {
