@@ -1,15 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { User } from '@prisma/client';
-import type { Request } from 'express';
 
 export const Authorized = createParamDecorator(
-  (data: keyof User, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest() as Request;
+  (data: keyof User, context: ExecutionContext) => {
+    const ctx = GqlExecutionContext.create(context);
 
-    const user = request.user;
+    const request = ctx.getContext().req;
 
-    return data ? user![data] : user;
+    const user = request.user as User;
+
+    return data ? user[data] : user;
   },
 );

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Field, InputType } from '@nestjs/graphql';
 import {
   IsEmail,
   IsNotEmpty,
@@ -7,32 +7,21 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class RegisterRequest {
-  @ApiProperty({
-    description: 'Display name',
-    example: 'John Doe',
-    maxLength: 50,
-  })
+@InputType()
+export class RegisterInput {
+  @Field(() => String)
   @IsString({ message: 'Name must be string' })
   @IsNotEmpty({ message: 'Name must be filled' })
   @MaxLength(50, { message: 'Name must not be more than 50 characters' })
   name: string;
 
-  @ApiProperty({
-    description: 'Email adress',
-    example: 'admin@gmail.com',
-  })
+  @Field(() => String)
   @IsString({ message: 'Email must be string' })
   @IsNotEmpty({ message: 'Email must be filled' })
   @IsEmail({}, { message: 'Incorrect format of Email' })
   email: string;
 
-  @ApiProperty({
-    description: 'Account password',
-    example: '123456',
-    minLength: 6,
-    maxLength: 128,
-  })
+  @Field(() => String)
   @IsString({ message: 'Password must be string' })
   @IsNotEmpty({ message: 'Password must be filled' })
   @MinLength(6, { message: 'Password must be more than 5 characters' })
