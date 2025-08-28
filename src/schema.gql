@@ -24,8 +24,9 @@ type Mutation {
 }
 
 type Query {
+  """This is the best method"""
+  getAllUsers: [UserModel!]!
   getMe: UserModel!
-  getUsers: [UserModel!]!
 }
 
 input RegisterInput {
@@ -34,12 +35,21 @@ input RegisterInput {
   password: String!
 }
 
+"""User model"""
 type UserModel {
   createdAt: DateTime!
+
+  """User email"""
   email: String!
   id: ID!
-  name: String!
+
+  """User name"""
+  name: String
+
+  """User password"""
   password: String!
+
+  """User role"""
   role: UserRole!
   updatedAt: DateTime!
 }
