@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArtistController } from './artist.controller';
 import { ArtistService } from './artist.service';
@@ -53,7 +52,7 @@ describe('Artist Controller', () => {
 
   it('should return a single artist by id', async () => {
     const result = await controller.findOne(artistId);
-    expect(result).toEqual([artist]);
+    expect(result).toEqual(artist);
   });
 
   it('should throw an exception if artist not found', async () => {
