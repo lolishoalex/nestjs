@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { ArtistController } from './artist/artist.controller';
 import { ArtistService } from './artist/artist.service';
 import { PrismaService } from './prisma/prisma.service';
+import { SpotifyModule } from './spotify/spotify.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PrismaService } from './prisma/prisma.service';
     }),
     PrismaModule,
     ArtistModule,
+    SpotifyModule,
   ],
   controllers: [AppController, ArtistController],
   providers: [AppService, ArtistService, PrismaService],
