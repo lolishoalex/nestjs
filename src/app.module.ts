@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { PrismaModule } from './prisma/prisma.module';
 import { ArtistModule } from './artist/artist.module';
 import { AppController } from './app.controller';
@@ -9,6 +10,8 @@ import { ArtistService } from './artist/artist.service';
 import { PrismaService } from './prisma/prisma.service';
 import { SpotifyModule } from './spotify/spotify.module';
 import { getSpotifyConfig } from './config/spotify.config';
+import { FileModule } from './file/file.module';
+import * as path from 'path';
 
 @Module({
   imports: [
@@ -20,8 +23,13 @@ import { getSpotifyConfig } from './config/spotify.config';
       useFactory: getSpotifyConfig,
       inject: [ConfigService],
     }),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', 'uploads'),
+      serveRoot: '/static',
+    }),
     PrismaModule,
     ArtistModule,
+    FileModule,
   ],
   controllers: [AppController, ArtistController],
   providers: [AppService, ArtistService, PrismaService],
