@@ -11,6 +11,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { SpotifyModule } from './spotify/spotify.module';
 import { getSpotifyConfig } from './config/spotify.config';
 import { FileModule } from './file/file.module';
+import { TaskModule } from './task/task.module';
 import * as path from 'path';
 
 @Module({
@@ -30,6 +31,7 @@ import * as path from 'path';
     PrismaModule,
     ArtistModule,
     FileModule,
+    TaskModule,
   ],
   controllers: [AppController, ArtistController],
   providers: [AppService, ArtistService, PrismaService],
