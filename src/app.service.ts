@@ -6,9 +6,10 @@ import { SpotifyService } from './spotify/spotify.service';
 
 @Injectable()
 export class AppService {
-  /*   hello() {
+  hello() {
     return 'Hello World!';
-  } */
+  }
+
   constructor(private readonly spotifyServise: SpotifyService) {}
 
   async getArtist(id: string) {
