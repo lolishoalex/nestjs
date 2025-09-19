@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Version } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -8,16 +8,5 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.hello();
-  }
-
-  @Version('2')
-  @Get('artists/:id')
-  async getArtist(@Param('id') id: string) {
-    return this.appService.getArtist(id);
-  }
-
-  @Get('albums/:id')
-  async getAlbum(@Param('id') id: string) {
-    return this.appService.getAlbum(id);
   }
 }
