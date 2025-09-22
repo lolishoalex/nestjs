@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
+import type { Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -8,5 +9,17 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.hello();
+  }
+
+  @Get(':code')
+  async getLinkByShortCode(
+    @Param('code') code: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const link = await this.appService.getLinkByShortCode(code);
+
+    await this.appService.trackClick(link.shortCode, '1', 'User Agent');
+
+    return res.redirect(link.originalUrl);
   }
 }
