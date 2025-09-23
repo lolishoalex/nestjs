@@ -16,7 +16,7 @@ export const ClientIp = createParamDecorator(
     const request = ctx.switchToHttp().getRequest() as Request;
 
     const ip = IS_DEV_ENV
-      ? '83.220.239.255'
+      ? '63.116.61.253'
       : Array.isArray(request.headers['cf-connecting-ip'])
         ? request.headers['cf-connecting-ip'][0]
         : (request.headers['cf-connecting-ip'] ??
