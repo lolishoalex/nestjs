@@ -5,7 +5,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
-import { PrismaService } from './../src/prisma/prisma.service';
+import { PrismaService } from '../src/infra/prisma/prisma.service';
 import { ArtistDto } from './../src/artist/dto/artist.dto';
 
 const dto: ArtistDto = {

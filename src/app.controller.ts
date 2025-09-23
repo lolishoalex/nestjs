@@ -1,5 +1,7 @@
-import { Controller, Get, Param, Version } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
+import type { Response } from 'express';
+import { ClientIp, UserAgent } from './common/decorators';
 
 @Controller()
 export class AppController {
@@ -10,14 +12,17 @@ export class AppController {
     return this.appService.hello();
   }
 
-  @Version('2')
-  @Get('artists/:id')
-  async getArtist(@Param('id') id: string) {
-    return this.appService.getArtist(id);
-  }
+  @Get(':code')
+  async getLinkByShortCode(
+    @Param('code') code: string,
+    @Res({ passthrough: true }) res: Response,
+    @ClientIp() ip: string,
+    @UserAgent() userAgent: string,
+  ) {
+    const link = await this.appService.getLinkByShortCode(code);
 
-  @Get('albums/:id')
-  async getAlbum(@Param('id') id: string) {
-    return this.appService.getAlbum(id);
+    await this.appService.trackClick(link.shortCode, ip, userAgent);
+
+    return res.redirect(link.originalUrl);
   }
 }

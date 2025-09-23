@@ -1,35 +1,38 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Injectable } from '@nestjs/common';
-import { SpotifyService } from './spotify/spotify.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from './infra/prisma/prisma.service';
 
 @Injectable()
 export class AppService {
+  constructor(private readonly prismaServise: PrismaService) {}
   hello() {
     return 'Hello World!';
   }
 
-  constructor(private readonly spotifyServise: SpotifyService) {}
+  async getLinkByShortCode(code: string) {
+    const link = await this.prismaServise.link.findUnique({
+      where: {
+        shortCode: code,
+      },
+    });
 
-  async getArtist(id: string) {
-    const artist = await this.spotifyServise.getArtist(id);
+    if (!link) throw new NotFoundException('Link not found');
 
-    return artist;
+    return link;
   }
 
-  async getAlbum(id: string) {
-    const album = await this.spotifyServise.getAlbum(id);
+  async trackClick(code: string, ipAdress: string, userAgent: string) {
+    const link = await this.getLinkByShortCode(code);
 
-    return {
-      id: album.id,
-      title: album.name,
-      releaseDate: album.release_date,
-      image: album.images[0].url,
-      tracks: album.tracks.items.map((track) => ({
-        id: track.id,
-        name: track.name,
-      })),
-    };
+    await this.prismaServise.click.create({
+      data: {
+        ipAdress,
+        userAgent,
+        link: {
+          connect: {
+            id: link.id,
+          },
+        },
+      },
+    });
   }
 }
